@@ -293,6 +293,7 @@ def write(data,*path):
 
 if __name__ == '__main__':
     css = '''
+html { font-family:sans-serif; }
 .underline { text-decoration: underline; }
 .strikethrough { text-decoration: line-through; }
 .todo { list-style-type: none; margin-left: -20px; }
@@ -370,7 +371,7 @@ if __name__ == '__main__':
         doc = parse(pb,s_doc)['version'][0]['data']
         section = render_html(doc,attachments)
         section.tag = 'section'
-        hdoc = E('html',E('head',E('style',css)),E('body',section))
+        hdoc = E('html',E('meta',{'charset':'utf-8'}),E('head',E('style',css)),E('body',section))
         fn = id
         if use_title and title:
             tmp = title.replace(':','_').replace('/','_')[:64]
@@ -380,7 +381,7 @@ if __name__ == '__main__':
                 fn = tmp + '_' + str(ix)
                 ix += 1
             seen.add(fn)
-        html = ET.tostring(hdoc,method='html')
+        html = ET.tostring(hdoc,encoding='utf-8',method='html')
         try:
             write(html,dest,f'{fn}.html')
         except:
